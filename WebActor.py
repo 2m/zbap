@@ -3,8 +3,8 @@ import pykka, web
 tagActor = None
 
 urls = (
-    '/play/([0-9]*)', 'Play',
-    '/play/([0-9]*)/fromStart', 'FromStart'
+    '/play/([a-z0-9]+)', 'Play',
+    '/play/([a-z0-9]+)/fromStart', 'FromStart'
 )
 
 class Play:
