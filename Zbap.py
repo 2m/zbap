@@ -9,7 +9,7 @@ from TagActor import TagActor
 from NfcActor import NfcActor
 
 sleepSeconds = 0.5
-rewindSecondsWhenResuming = 5 * 60
+rewindSecondsWhenResuming = -5 * 60
 pleaseContinue = True
 
 def quitGracefully(*args):
