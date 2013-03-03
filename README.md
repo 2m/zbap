@@ -1,5 +1,7 @@
 Zero Button Audiobook Player
 ============================
+[Demo video.][http://www.youtube.com/watch?v=PfXmEMPt9ws]
+
 This project is based on Raspberry Pi and hugely inspired by [The One Button Audiobook player]. I too have grandmother who is visually impaired and loves listening to audiobooks. Until now she has been doing this using old DVD player, which worked quite well, but that player does not save its state. So every time its turned off and back on it begins to play audiobook from the beginning.
 
 So naturally this was a great opportunity for a Raspberry Pi project. However I went a little bit further and did not add any buttons at all. This audiobook player can be controlled using simple HTTP queries (mostly for debugging) or using NFC tags.
