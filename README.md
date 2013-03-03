@@ -51,13 +51,36 @@ That is pretty much it. All of these parts combined make a pretty neat Zero Butt
 
 Software Architecture
 =====================
-Here I will list logical modules of the software and their relations.
+Here I will list logical modules of the software and their relations. All modules are mostly _pykka actor proxy objects_. So whenever you see that one actor is calling a method of other actor, it really is not the case. Behind the scenes a message is sent from one actor to another. So all these calls are asynchronous.
 
 [Zbap.py](Zbap.py)
--------
+------------------
 The main project file which creates and initializes all actors. It also from time to time gives a tick to actors which need to do periodic tasks. The whole project is started by executing ```python Zbap.py```.
 
 This _ticking actors_ implementation is one place where I think is implemented wrongly according to the Actor Model. At first these actors had a infinite loop inside them, but in this case these actors would continue looping even if main program was killed. So to have better control of the program flow, I moved the loop to the [Zbap.py](Zbap.py) file.
+
+[MpdActor.py](MpdActor.py)
+--------------------------
+This actor connects to MPD using mpd-python2 and is responsible of controlling MPD. It has methods ```getCurrentSong``` and ```playByNameFrom``` which are quite self documenting. These methods are for other actors to call.
+
+[StateActor.py](StateActor.py)
+------------------------------
+Actor which saves currently playing song and the amount of seconds played from the beginning every so often. State is saved to [data/state.json](data/state.json) file. It also provides ```playFromLastState``` method for other actors which when called starts playing an audio file from its last saved state.
+
+[TagActor.py](TagActor.py)
+--------------------------
+Actor which translates between audio file _tag_ and its file name. The mapping between audio file names and tags is provided in [data/tags.py](data/tags.py) file.
+
+[WebActor.py](WebActor.py)
+--------------------------
+This actor provides HTTP interface to the audiobook player. This is really helpful when debugging given that HTTP calls can be made using a web browser from any computer connected to the same network as Raspberry Pi. Available commands:
+
+* ```http://<raspberry_pi_ip>:8080/play/<tag>``` Starts playing a song identified by a tag from its last known state.
+* ```http://<raspberry_pi_ip>:8080/play/<tag>/fromStart``` Starts playing a song identified by a tag from the start.
+
+[NfcActor.py](NfcActor.py)
+--------------------------
+Actor which looks if there is a NFC tag nearby by calling ```nfc-list``` command. If NFC tag is found, this actor parses the tag from the command output and gives it to the [TagActor.py](TagActor.py) asking to play the audio file.
 
 [The One Button Audiobook player]: http://blogs.fsfe.org/clemens/2012/10/30/the-one-button-audiobook-player/
 [ModMyPi]: https://www.modmypi.com/
