@@ -1,6 +1,6 @@
 Zero Button Audiobook Player
 ============================
-[Demo video.][http://www.youtube.com/watch?v=PfXmEMPt9ws]
+[Demo video]
 
 This project is based on Raspberry Pi and hugely inspired by [The One Button Audiobook player]. I too have grandmother who is visually impaired and loves listening to audiobooks. Until now she has been doing this using old DVD player, which worked quite well, but that player does not save its state. So every time its turned off and back on it begins to play audiobook from the beginning.
 
@@ -84,6 +84,7 @@ This actor provides HTTP interface to the audiobook player. This is really helpf
 --------------------------
 Actor which periodically checks if there is a NFC tag nearby by calling ```nfc-list``` command. If NFC tag is found, this actor parses the tag from the command output and gives it to the [TagActor.py](TagActor.py) asking to play the audio file.
 
+[Demo video]: [http://www.youtube.com/watch?v=PfXmEMPt9ws]
 [The One Button Audiobook player]: http://blogs.fsfe.org/clemens/2012/10/30/the-one-button-audiobook-player/
 [ModMyPi]: https://www.modmypi.com/
 [PN532 NFC RFID module kit]: http://www.elechouse.com/elechouse/index.php?main_page=product_info&cPath=90_93&products_id=2205
