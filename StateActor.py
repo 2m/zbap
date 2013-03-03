@@ -1,4 +1,4 @@
-import json 
+import json, logging
 
 from TickActor import TickActor
 
@@ -28,17 +28,22 @@ class StateActor(TickActor):
 
     def playFromLastState(self, name=None, fromStart=False):
         state = self.loadState()
-        if name == state["current"]["name"]:
-            fromStart = True
+        try:
+            if name == state["current"]["name"]:
+                fromStart = True
 
-        if name == None:
-            name = state["current"]["name"]
+            if name == None:
+                name = state["current"]["name"]
+        except KeyError:
+            logging.getLogger('zbap').info('No info of currently played file. Probably a fresh start.')
+            return
 
         elapsed = 0
         if not fromStart:
             try:
                 elapsed = state["played"][name]
             except KeyError:
+                logging.getLogger('zbap').info('No info of elapsed seconds of file %s. Playing from start.' % name)
                 pass
 
         self.mpdActor.playByNameFrom(name, elapsed)
