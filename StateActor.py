@@ -28,6 +28,9 @@ class StateActor(TickActor):
 
     def playFromLastState(self, name=None, fromStart=False):
         state = self.loadState()
+        if name == state["current"]["name"]:
+            fromStart = True
+
         if name == None:
             name = state["current"]["name"]
 

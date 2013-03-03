@@ -6,6 +6,7 @@ from WebActor import WebActor
 from MpdActor import MpdActor
 from StateActor import StateActor
 from TagActor import TagActor
+from NfcActor import NfcActor
 
 sleepSeconds = 0.5
 
@@ -19,13 +20,17 @@ if __name__ == "__main__":
     stateActor = StateActor.start(mpdActor, sleepSeconds).proxy()
 
     tagActor = TagActor.start(stateActor).proxy()
+
     webActor = WebActor.start(tagActor).proxy()
+    nfcActor = NfcActor.start(tagActor, sleepSeconds).proxy()
 
     stateActor.playFromLastState()
 
     try:
         while True:
             stateActor.tick()
+            nfcActor.tick()
+
             sleep(sleepSeconds)
     except KeyboardInterrupt:
         print "Exiting main loop."

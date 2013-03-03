@@ -1,5 +1,7 @@
 import pykka, mpd, logging
 
+DEFAULT_VOLUME = 100
+
 class MpdActor(pykka.ThreadingActor):
     def __init__(self):
         super(MpdActor, self).__init__()
@@ -20,6 +22,8 @@ class MpdActor(pykka.ThreadingActor):
 
     def playByNameFrom(self, name, playFrom):
         try:
+            self.client.setvol(0)
+
             self.client.clear()
             self.client.add(name)
             self.client.play()
@@ -31,6 +35,8 @@ class MpdActor(pykka.ThreadingActor):
 
             logging.getLogger('zbap').info('Playing %s from %s' % (name, playFrom))
             self.client.seekid(currentSong['id'], playFrom)
+
+            self.client.setvol(DEFAULT_VOLUME)
 
         except mpd.CommandError, e:
             logging.getLogger('zbap').error('Exception: %s' % e.message)
