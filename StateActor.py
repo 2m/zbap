@@ -36,7 +36,8 @@ class StateActor(TickActor):
                 name = state["current"]["name"]
         except KeyError:
             logging.getLogger('zbap').info('No info of currently played file. Probably a fresh start.')
-            return
+            if name == None:
+                return
 
         elapsed = 0
         if not fromStart:
