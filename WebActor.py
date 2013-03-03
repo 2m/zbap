@@ -1,4 +1,4 @@
-import pykka, web 
+import pykka, web, logging
 
 tagActor = None
 
@@ -24,8 +24,11 @@ def runInThread(function):
     t.start()
 
 def runWebApp():
-    app = web.application(urls, globals())
-    app.run()
+    try:
+        app = web.application(urls, globals())
+        app.run()
+    except Exception:
+        logging.getLogger('zbap').info('Shutting down web server.')
 
 class WebActor(pykka.ThreadingActor):
     def __init__(self, tagAct):

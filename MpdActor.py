@@ -40,3 +40,6 @@ class MpdActor(pykka.ThreadingActor):
 
         except mpd.CommandError, e:
             logging.getLogger('zbap').error('Exception: %s' % e.message)
+
+    def pause(self):
+        self.client.pause()

@@ -1,2 +1,7 @@
 #!/bin/bash
-ps a | grep "python Zbap.py" | cut -d" " -f 2 | xargs kill -9
+CURRENT_PID=`pgrep -f "python Zbap.py"`
+if [ -n "${CURRENT_PID}" ]; then
+    kill -SIGINT $CURRENT_PID
+else
+    echo "Zbap is not running."
+fi

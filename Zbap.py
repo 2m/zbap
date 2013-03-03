@@ -1,4 +1,4 @@
-import pykka, logging
+import pykka, logging, signal
 
 from time import sleep 
 
@@ -9,8 +9,16 @@ from TagActor import TagActor
 from NfcActor import NfcActor
 
 sleepSeconds = 0.5
+pleaseContinue = True
 
-if __name__ == "__main__":
+def quitGracefully(*args):
+    global pleaseContinue
+    logging.getLogger('zbap').info('Received SIGINT.')
+    pleaseContinue = False
+
+def run():
+    global pleaseContinue
+    signal.signal(signal.SIGINT, quitGracefully)
 
     logging.basicConfig(filename='zbap.log', format="%(asctime)s [%(module)s.%(funcName)s] %(levelname)s: %(message)s")
     logging.getLogger('pykka').setLevel(logging.DEBUG)
@@ -27,12 +35,18 @@ if __name__ == "__main__":
     stateActor.playFromLastState()
 
     try:
-        while True:
+        while pleaseContinue:
             stateActor.tick()
             nfcActor.tick()
 
             sleep(sleepSeconds)
     except KeyboardInterrupt:
-        print "Exiting main loop."
+        logging.getLogger('zbap').info('Received KeyboardInterrupt.')
+        
+    logging.getLogger('zbap').info('Stopping...')
 
+    mpdActor.pause()
     pykka.ActorRegistry.stop_all()
+    
+if __name__ == "__main__":
+    run()
