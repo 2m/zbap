@@ -26,28 +26,40 @@ class StateActor(TickActor):
 
         self.saveState(state)
 
-    def playFromLastState(self, name=None, fromStart=False):
-        state = self.loadState()
-        try:
-            if name == state["current"]["name"]:
-                fromStart = True
-
-            if name == None:
-                name = state["current"]["name"]
-        except KeyError:
-            logging.getLogger('zbap').info('No info of currently played file. Probably a fresh start.')
-            if name == None:
-                return
+    def playFromLastState(self, name, fromStart=False):
+        if name == self.getCurrent():
+            fromStart = True
 
         elapsed = 0
         if not fromStart:
-            try:
-                elapsed = state["played"][name]
-            except KeyError:
-                logging.getLogger('zbap').info('No info of elapsed seconds of file %s. Playing from start.' % name)
-                pass
+            elapsed = self.getElapsed(name)
 
         self.mpdActor.playByNameFrom(name, elapsed)
+
+    def playLast(self, relativeElapsed=0):
+        name = self.getCurrent()
+        if name != None:
+            elapsed = self.getElapsed(name) + relativeElapsed
+            if elapsed < 0:
+                elapsed = 0
+
+            self.mpdActor.playByNameFrom(name, elapsed)
+
+    def getCurrent(self):
+        state = self.loadState()
+        try:
+            return state["current"]["name"]
+        except KeyError:
+            logging.getLogger('zbap').info('No info of currently played file. Probably a fresh start.')
+            return None
+
+    def getElapsed(self, name):
+        state = self.loadState()
+        try:
+            return state["played"][name]
+        except KeyError:
+            logging.getLogger('zbap').info('No info of elapsed seconds of file %s. Playing from start.' % name)
+            return 0
             
     def loadState(self):
         try:

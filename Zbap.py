@@ -9,6 +9,7 @@ from TagActor import TagActor
 from NfcActor import NfcActor
 
 sleepSeconds = 0.5
+rewindSecondsWhenResuming = 5 * 60
 pleaseContinue = True
 
 def quitGracefully(*args):
@@ -32,7 +33,7 @@ def run():
     webActor = WebActor.start(tagActor).proxy()
     nfcActor = NfcActor.start(tagActor, sleepSeconds).proxy()
 
-    stateActor.playFromLastState()
+    stateActor.playLast(rewindSecondsWhenResuming)
 
     try:
         while pleaseContinue:
