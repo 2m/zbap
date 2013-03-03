@@ -1,4 +1,5 @@
-import pykka, web, logging, os
+from subprocess import Popen, PIPE
+import pykka, web, logging, os, re
 
 tagActor = None
 
@@ -19,7 +20,8 @@ render._keywords['globals']['render'] = render
 
 class Index:
     def GET(self):
-        return render.base(items())
+        total, free = getDiskInfo()
+        return render.base(items(), total, free)
 
 class AddTag:
     def GET(self, name):
@@ -40,6 +42,12 @@ class FromStart:
     def GET(self, tag):
         tagActor.playByTag(tag, fromStart=True)
         return 'Called tagActor with tag: %s and fromStart=True\n' % tag
+
+def getDiskInfo():
+    p = Popen("df -h | grep rootfs", shell=True, stdout=PIPE, stderr=PIPE)
+    out, err = p.communicate()
+    m = re.match("rootfs[\s]+([0-9KMGTP\.]+)[\s]+[0-9KMGTP\.]+[\s]+([0-9KMGTP\.]+)", out)
+    return m.group(1), m.group(2)
 
 def items(**k):
     currentFiles = os.listdir(FILE_DIR)
