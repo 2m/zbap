@@ -1,6 +1,5 @@
 Zero Button Audiobook Player
 ============================
-
 This project is based on Raspberry Pi and hugely inspired by [The One Button Audiobook player]. I too have grandmother who is visually impaired and loves listening to audiobooks. Until now she has been doing this using old DVD player, which worked quite well, but that player does not save its state. So every time its turned off and back on it begins to play audiobook from the beginning.
 
 So naturally this was a great opportunity for a Raspberry Pi project. However I went a little bit further and did not add any buttons at all. This audiobook player can be controlled using simple HTTP queries (mostly for debugging) or using NFC tag.
@@ -13,12 +12,10 @@ I believe this has the smallest learning curve (if any). I will see what my gran
 
 How it came about
 =================
-
 This is my first Raspberry Pi project. So here I will try to enumerate every step that I took to make this project be.
 
 Hardware
 --------
-
 I got a Raspberry Pi for this project from [ModMyPi]. I also bought a case, SD to microSD card adapter and HDMI to DVI adapter from there.
 
 It took some time to locate a suitable NFC reader. It had to be quite small so it fitted RPi case. I chose [PN532 NFC RFID module kit] which I saw mentioned in couple of SIB Vision blog posts.
@@ -29,7 +26,6 @@ So I unsoldered 0 Ohm resistor from _bit 1 of HIS0 pin_ and then shortened _bit 
 
 Software
 --------
-
 I chose to use Python for this project, which comes already in a [Rasbian Weezy] which I installed into microSD card and successfully booted RPi for the first time.
 
 I am quite limited in some parts of working in Linux. For example I was not quite sure how to configure network on Raspberry Pi. This is what helped me to [Share Internet Connection with Linux] from my Windows PC.
@@ -55,8 +51,13 @@ That is pretty much it. All of these parts combined make a pretty neat Zero Butt
 
 Software Architecture
 =====================
-
 Here I will list logical modules of the software and their relations.
+
+[Zbap.py](Zbap.py)
+-------
+The main project file which creates and initializes all actors. It also from time to time gives a tick to actors which need to do periodic tasks. The whole project is started by executing ```python Zbap.py```.
+
+This _ticking actors_ implementation is one place where I think is implemented wrongly according to the Actor Model. At first these actors had a infinite loop inside them, but in this case these actors would continue looping even if main program was killed. So to have better control of the program flow, I moved the loop to the [Zbap.py](Zbap.py) file.
 
 [The One Button Audiobook player]: http://blogs.fsfe.org/clemens/2012/10/30/the-one-button-audiobook-player/
 [ModMyPi]: https://www.modmypi.com/
