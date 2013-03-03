@@ -23,6 +23,21 @@ class TagActor(pykka.ThreadingActor):
         except KeyError:
             logging.getLogger('zbap').error('No such tag %s' % tag)
 
+    def addTag(self, name):
+        tag = self.getTagActor().getTag().get()
+        if tag != None:
+            tags = self.loadTags()
+            tags[tag] = name
+            self.saveTags(tags)
+
+    def removeTag(self, tag):
+        tags = self.loadTags()
+        del tags[tag]
+        self.saveTags(tags)
+
+    def getTagActor(self):
+        return pykka.ActorRegistry.get_by_class_name("NfcActor")[0].proxy()
+
     def loadTags(self):
         try:
             with open(TAGS_FILE, 'r') as tagsFile:

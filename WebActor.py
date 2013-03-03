@@ -1,11 +1,35 @@
-import pykka, web, logging
+import pykka, web, logging, os
 
 tagActor = None
 
+FILE_DIR = '../music/'
+
 urls = (
+    '/', 'Index',
+    '/add/(.+)', 'AddTag',
+    '/remove/(.+)', 'RemoveTag',
     '/play/([a-z0-9]+)', 'Play',
     '/play/([a-z0-9]+)/fromStart', 'FromStart'
 )
+
+t_globals = dict(datestr=web.datestr)
+
+render = web.template.render('templates/', cache=False, globals=t_globals)
+render._keywords['globals']['render'] = render
+
+class Index:
+    def GET(self):
+        return render.base(items())
+
+class AddTag:
+    def GET(self, name):
+        tagActor.addTag(name).get()
+        raise web.seeother('/')
+
+class RemoveTag:
+    def GET(self, tag):
+        tagActor.removeTag(tag).get()
+        raise web.seeother('/')
 
 class Play:
     def GET(self, tag):
@@ -16,6 +40,20 @@ class FromStart:
     def GET(self, tag):
         tagActor.playByTag(tag, fromStart=True)
         return 'Called tagActor with tag: %s and fromStart=True\n' % tag
+
+def items(**k):
+    currentFiles = os.listdir(FILE_DIR)
+    tags = {name:tag for tag, name in tagActor.loadTags().get().items()}
+
+    filesTagArray = []
+    for fileName in currentFiles:
+        if fileName in tags:
+            filesTagArray.append({"name": fileName, "tag": tags[fileName]})
+        else:
+            filesTagArray.append({"name": fileName, "tag": None})
+
+
+    return render.items(filesTagArray)
 
 def runInThread(function):
     from threading import Thread

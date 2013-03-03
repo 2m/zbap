@@ -24,6 +24,9 @@ class NfcActor(TickActor):
         logging.getLogger('zbap').info('Calling tagActor.playByTag() with tag: %s' % tag)
         self.tagActor.playByTag(tag)
 
+    def getCurrentTag(self):
+        return self.currentTag
+
     def getTag(self):
         p = Popen("nfc-list", shell=True, stdout=PIPE, stderr=PIPE)
         out, err = p.communicate()
