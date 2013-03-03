@@ -84,7 +84,7 @@ This actor provides HTTP interface to the audiobook player. This is really helpf
 --------------------------
 Actor which periodically checks if there is a NFC tag nearby by calling ```nfc-list``` command. If NFC tag is found, this actor parses the tag from the command output and gives it to the [TagActor.py](TagActor.py) asking to play the audio file.
 
-[Demo video]: [http://www.youtube.com/watch?v=PfXmEMPt9ws]
+[Demo video]: http://www.youtube.com/watch?v=PfXmEMPt9ws
 [The One Button Audiobook player]: http://blogs.fsfe.org/clemens/2012/10/30/the-one-button-audiobook-player/
 [ModMyPi]: https://www.modmypi.com/
 [PN532 NFC RFID module kit]: http://www.elechouse.com/elechouse/index.php?main_page=product_info&cPath=90_93&products_id=2205
