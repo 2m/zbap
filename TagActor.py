@@ -18,7 +18,6 @@ class TagActor(pykka.ThreadingActor):
             self.ack.play()
 
             tags = self.loadTags()
-            print tags
             self.stateActor.playFromLastState(tags[tag], fromStart)
         except KeyError:
             logging.getLogger('zbap').error('No such tag %s' % tag)
