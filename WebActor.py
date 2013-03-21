@@ -50,7 +50,7 @@ def getDiskInfo():
     return m.group(1), m.group(2)
 
 def items(**k):
-    currentFiles = os.listdir(FILE_DIR)
+    currentFiles = sorted(os.listdir(FILE_DIR))
     tags = {name:tag for tag, name in tagActor.loadTags().get().items()}
 
     filesTagArray = []
