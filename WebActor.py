@@ -47,7 +47,12 @@ def getDiskInfo():
     p = Popen("df -h | grep rootfs", shell=True, stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
     m = re.match("rootfs[\s]+([0-9KMGTP\.]+)[\s]+[0-9KMGTP\.]+[\s]+([0-9KMGTP\.]+)", out)
-    return m.group(1), m.group(2)
+    total = "N/A"
+    free = "N/A"
+    if m != None:
+        total = m.group(1)
+        free = m.group(2)
+    return total, free
 
 def items(**k):
     currentFiles = sorted(os.listdir(FILE_DIR))
