@@ -51,6 +51,8 @@ NFC part of this project is handled by the open source [libnfc]. To install (com
 
 That is pretty much it. All of these parts combined make a pretty neat Zero Button Audiobook Player. :)
 
+I used merged MP3 audiobooks. However after merging MPD was not able to play past the first part. I used [mp3val](http://mp3val.sourceforge.net/) to clean and fix merged MP3 files.
+
 Software Architecture
 =====================
 Here I will list logical modules of the software and their relations. All modules are mostly _pykka actor proxy objects_. So whenever you see that one actor is calling a method of other actor, it really is not the case. Behind the scenes a message is sent from one actor to another. So all these calls are asynchronous.
