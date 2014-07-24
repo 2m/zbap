@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <title>Zero Button Audio Book Player</title>
+    <meta name="author" content="Martynas Mickevicius" />
+
+    <link href="zbap.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="images/icon.png" />
+</head>
+
+<body>
+<div id="impress">
+
+    <div id="case" class="step" data-x="0" data-y="0">
+        <img src="images/case.jpg" />
+    </div>
+
+    <div id="rpi" class="step" data-x="-500" data-y="-500" data-z="-2000">
+        <img src="images/rpi.jpg" />
+    </div>
+
+    <div id="rpi-specs" class="step" data-x="-500" data-y="-1200" data-z="-2000" data-rotate-x="30">
+         <ul style="float: left; width: 420px">
+            <li>700 MHz ARM11</li>
+            <li>512 MB RAM</li>
+            <li>2x USB 2.0</li>
+            <li>RCA, HDMI</li>
+        </ul>
+        <ul style="float: left; width: 400px">
+            <li>3.5 mm jack, HDMI</li>
+            <li>10/100 Ethernet</li>
+            <li>26 GPIO Pins</li>
+            <li>~120 LT</li>
+        </ul>
+        <div style="clear: both"></div>
+    </div>
+
+    <div id="nfc" class="step" data-x="500" data-y="-500" data-z="-2000">
+        <img src="images/nfc.jpg" />
+    </div>
+
+    <div id="nfc-specs" class="step" data-x="500" data-y="-1200" data-z="-2000" data-rotate-x="30">
+         <ul>
+            <li>PN532 NFC Arduino Module V3</li>
+            <li>Reader / Writer / Card</li>
+            <li>I2C / SPI / HSU (UART)</li>
+            <li>~60 LT</li>
+        </ul>
+    </div>
+
+    <div id="microsd" class="step" data-x="0" data-y="500" data-z="-2000">
+        <img src="images/microsd.jpg" />
+    </div>
+
+    <div id="soft" class="step" data-x="0" data-y="1200" data-z="-2000" data-rotate-x="-30">
+         <ul>
+            <li>Raspbian</li>
+            <li>Python</li>
+            <li>nfclib</li>
+        </ul>
+    </div>
+
+    <div id="mpc" class="step" data-x="700" data-y="0" data-z="2000" data-rotate-y="-30">
+        <style>
+            #mpc div {
+                margin: 40px 0px;
+            }
+        </style>
+        <div>Get Nearby Tag</div>
+        <div>Play/Seek</div>
+        <div>Periodically Save State</div>
+        <div>Recover On Startup</div>
+        <div>Assign Tag To a File</div>
+    </div>
+
+</div>
+<script src="impress.js"></script>
+<script>
+window.onload = function() { impress().init(); };
+</script>
+</body>
+
+</html>

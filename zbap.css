@@ -1,0 +1,66 @@
+/*
+    This is hugely inspired by Bartek Szopka's https://github.com/bartaz/impress.js
+*/
+
+/*
+    Reset by Eric Meyer http://meyerweb.com/eric/tools/css/reset/
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+body {
+    font-family: 'PT Sans', sans-serif;
+    min-height: 7200px;
+
+    background: radial-gradient(rgb(240, 240, 240), rgb(10, 10, 10));
+}
+
+img {
+    border: 10px solid gray;
+    height: 800px;
+}
+
+li {
+    list-style-type: none;
+}
+
+.step {
+    position: relative;
+    min-width: 900px;
+    padding: 40px;
+    margin: 20px auto;
+
+    box-sizing:         border-box;
+
+    font-family: 'PT Serif', georgia, serif;
+    font-size: 48px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.impress-enabled .step {
+    opacity: 0.3;
+    transition: opacity 1s;
+}
+
+.impress-enabled .step.active {
+    opacity: 1
+}
