@@ -2,6 +2,7 @@ Zero Button Audiobook Player
 ============================
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/2m/zbap?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [Demo video]
 
 This project is based on Raspberry Pi and hugely inspired by [The One Button Audiobook player]. I too have grandmother who is visually impaired and loves listening to audiobooks. Until now she has been doing this using old DVD player, which worked quite well, but that player does not save its state. So every time its turned off and back on it begins to play audiobook from the beginning.
