@@ -1,52 +1,43 @@
 from subprocess import Popen, PIPE
-import pykka, web, logging, os, re
+import pykka, logging, os, re
+from bottle import Bottle, view, redirect
 
 tagActor = None
 
-FILE_DIR = '../music/'
+FILE_DIR = '/var/lib/mpd/music/'
 
-urls = (
-    '/', 'Index',
-    '/add/(.+)', 'AddTag',
-    '/remove/(.+)', 'RemoveTag',
-    '/play/([a-z0-9]+)', 'Play',
-    '/play/([a-z0-9]+)/fromStart', 'FromStart'
-)
+app = Bottle()
 
-t_globals = dict(datestr=web.datestr)
+@app.route('/')
+@view('index')
+def index():
+    total, free = getDiskInfo()
+    return dict(items=items(), totalMem=total, freeMem=free)
 
-render = web.template.render('templates/', cache=False, globals=t_globals)
-render._keywords['globals']['render'] = render
+@app.route('/add/<name>')
+def add(name):
+    tagActor.addTag(name).get()
+    redirect('/')
 
-class Index:
-    def GET(self):
-        total, free = getDiskInfo()
-        return render.base(items(), total, free)
+@app.route('/remove/<tag>')
+def remove(tag):
+    tagActor.removeTag(tag).get()
+    redirect('/')
 
-class AddTag:
-    def GET(self, name):
-        tagActor.addTag(name).get()
-        raise web.seeother('/')
+@app.route('/play/<tag>')
+def play(tag):
+    tagActor.playByTag(tag)
+    return 'Called tagActor with tag: %s\n' % tag
 
-class RemoveTag:
-    def GET(self, tag):
-        tagActor.removeTag(tag).get()
-        raise web.seeother('/')
-
-class Play:
-    def GET(self, tag):
-        tagActor.playByTag(tag)
-        return 'Called tagActor with tag: %s\n' % tag
-
-class FromStart:
-    def GET(self, tag):
-        tagActor.playByTag(tag, fromStart=True)
-        return 'Called tagActor with tag: %s and fromStart=True\n' % tag
+@app.route('/play/<tag>/fromStart')
+def play_from_start(tag):
+    tagActor.playByTag(tag, fromStart=True)
+    return 'Called tagActor with tag: %s and fromStart=True\n' % tag
 
 def getDiskInfo():
-    p = Popen("df -h | grep rootfs", shell=True, stdout=PIPE, stderr=PIPE)
+    p = Popen("df -h .", shell=True, stdout=PIPE, stderr=PIPE)
     out, err = p.communicate()
-    m = re.match("rootfs[\s]+([0-9KMGTP\.]+)[\s]+[0-9KMGTP\.]+[\s]+([0-9KMGTP\.]+)", out)
+    m = re.match("([0-9KMGTP\.]+)[\s]+[0-9KMGTP\.]+[\s]+([0-9KMGTP\.]+)", out.decode("utf-8"))
     total = "N/A"
     free = "N/A"
     if m != None:
@@ -66,7 +57,7 @@ def items(**k):
             filesTagArray.append({"name": fileName, "tag": None})
 
 
-    return render.items(filesTagArray)
+    return filesTagArray
 
 def runInThread(function):
     from threading import Thread
@@ -76,8 +67,7 @@ def runInThread(function):
 
 def runWebApp():
     try:
-        app = web.application(urls, globals())
-        app.run()
+        app.run(host='0.0.0.0', port=8080)
     except Exception:
         logging.getLogger('zbap').info('Shutting down web server.')
 
@@ -86,6 +76,6 @@ class WebActor(pykka.ThreadingActor):
         super(WebActor, self).__init__()
 
         global tagActor
-        tagActor = tagAct 
+        tagActor = tagAct
 
         runInThread(runWebApp)

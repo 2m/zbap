@@ -18,4 +18,3 @@ class TickActor(pykka.ThreadingActor):
 
     def doTick(self):
         pass
-

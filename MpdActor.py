@@ -30,7 +30,7 @@ class MpdActor(pykka.ThreadingActor):
 
             currentSong = self.client.currentsong()
             if playFrom + 20 > int(currentSong['time']):
-                # play from start, if trying to play too close from the end 
+                # play from start, if trying to play too close from the end
                 playFrom = 0
 
             logging.getLogger('zbap').info('Playing %s from %s' % (name, playFrom))
@@ -38,8 +38,10 @@ class MpdActor(pykka.ThreadingActor):
 
             self.client.setvol(DEFAULT_VOLUME)
 
-        except mpd.CommandError, e:
-            logging.getLogger('zbap').error('Exception: %s' % e.message)
+        except mpd.CommandError as e:
+            logging.getLogger('zbap').error('MPD Command error')
+            logging.getLogger('zbap').exception(e)
+
 
     def pause(self):
         self.client.pause()

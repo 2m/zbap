@@ -1,0 +1,11 @@
+[Unit]
+Description=Zero Button Audio Book Player
+After=mpd.service
+
+[Service]
+WorkingDirectory=/root/zbap
+ExecStart=/usr/bin/python Zbap.py
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

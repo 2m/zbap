@@ -1,6 +1,6 @@
 import pykka, logging, signal
 
-from time import sleep 
+from time import sleep
 
 from WebActor import WebActor
 from MpdActor import MpdActor
@@ -43,11 +43,11 @@ def run():
             sleep(sleepSeconds)
     except KeyboardInterrupt:
         logging.getLogger('zbap').info('Received KeyboardInterrupt.')
-        
+
     logging.getLogger('zbap').info('Stopping...')
 
     mpdActor.pause()
     pykka.ActorRegistry.stop_all()
-    
+
 if __name__ == "__main__":
     run()
