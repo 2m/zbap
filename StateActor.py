@@ -17,7 +17,7 @@ class StateActor(TickActor):
             return
 
         state = self.loadState()
-        state["current"] = current 
+        state["current"] = current
         try:
             state["played"][current["name"]] = current["elapsed"]
         except KeyError:
@@ -60,11 +60,11 @@ class StateActor(TickActor):
         except KeyError:
             logging.getLogger('zbap').info('No info of elapsed seconds of file %s. Playing from start.' % name)
             return 0
-            
+
     def loadState(self):
         try:
             with open(STATE_FILE, 'r') as stateFile:
-                return json.load(stateFile) 
+                return json.load(stateFile)
         except (IOError, ValueError) as e:
             return {}
 

@@ -30,10 +30,9 @@ class NfcActor(TickActor):
     def getTag(self):
         p = Popen("nfc-list", shell=True, stdout=PIPE, stderr=PIPE)
         out, err = p.communicate()
-        for line in out.split("\n"):
+        for line in out.decode("utf-8").split("\n"):
             m = re.match(r"[\s]*UID \(NFCID1\): ([a-z0-9 ]+)\b", line)
             if m:
                 return m.group(1).replace(" ", "")
 
         return None
-    	

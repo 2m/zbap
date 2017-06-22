@@ -1,5 +1,4 @@
 import pykka, logging, json
-from pygame import mixer
 
 TAGS_FILE = 'data/tags.json'
 
@@ -9,14 +8,8 @@ class TagActor(pykka.ThreadingActor):
 
         self.stateActor = stateActor
 
-        mixer.init()
-        self.ack = mixer.Sound('data/ack.wav')
-        self.ack.set_volume(1.0)
-
     def playByTag(self, tag, fromStart=False):
         try:
-            self.ack.play()
-
             tags = self.loadTags()
             self.stateActor.playFromLastState(tags[tag], fromStart)
         except KeyError:
@@ -40,7 +33,7 @@ class TagActor(pykka.ThreadingActor):
     def loadTags(self):
         try:
             with open(TAGS_FILE, 'r') as tagsFile:
-                return json.load(tagsFile) 
+                return json.load(tagsFile)
         except (IOError, ValueError) as e:
             logging.getLogger('zbap').error('Unable to load tag file %s' % TAGS_FILE)
             logging.getLogger('zbap').exception(e)
